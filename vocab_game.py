@@ -26,9 +26,10 @@ def reset_game():
 
 # ----------------------------------------------------
 # 📌 ฟังก์ชัน MessageBox (Dialog)
+# แก้ไข: เพิ่ม parameter ans3, ans4 ให้ครบถ้วน
 # ----------------------------------------------------
 @st.dialog("📊 สรุปผลการเล่นเกม")
-def show_result_dialog(ans1, ans2):
+def show_result_dialog(ans1, ans2, ans3, ans4):
     st.balloons()
     score = 0
 
@@ -51,20 +52,20 @@ def show_result_dialog(ans1, ans2):
     else:
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
 
-     # ตรวจข้อ 3
-    if u_ans2 == "mango":
+    # ตรวจข้อ 3 (แก้ไข: เปลี่ยนจาก u_ans2 เป็น u_ans3)
+    if u_ans3 == "mango":
         st.success("✅ ข้อ 3: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 3: ยังไม่ถูกต้อง (คุณตอบ '{u_ans3}')")
 
-     # ตรวจข้อ 4
-    if u_ans2 == "pen":
+    # ตรวจข้อ 4 (แก้ไข: เปลี่ยนจาก u_ans2 เป็น u_ans4)
+    if u_ans4 == "pen":
         st.success("✅ ข้อ 4: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 4: ยังไม่ถูกต้อง (คุณตอบ '{u_ans4}')")
-        
+
     st.info(f"🏆 ได้คะแนนรวม: {score} คะแนน")
 
     if score == 4:
@@ -90,7 +91,7 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
 
 st.divider()
 
-# 3. ช่องรับคำตอบ (ใช้ value ผูกกับตัวแปรตรงๆ เพื่อสั่งเคลียร์ได้)
+# 3. ช่องรับคำตอบ
 ans1 = st.text_input(
     "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
     value=st.session_state.ans1_val,
@@ -107,6 +108,7 @@ ans4 = st.text_input(
     "ข้อ 4: This `p _ n` writes very smoothly. 🖊️",
     value=st.session_state.ans4_val,
 )
+
 # อัปเดตค่าล่าสุดเข้าตัวแปร
 st.session_state.ans1_val = ans1
 st.session_state.ans2_val = ans2
@@ -119,12 +121,14 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
         st.session_state.is_ended = True
         st.rerun()
 
-    time.sleep(1)
-    st.rerun()
-
 # 5. แสดง Dialog ผลลัพธ์
 if st.session_state.get("is_ended", False):
-    show_result_dialog(ans1, ans2, ans3, ans4)
+    show_result_dialog(
+        st.session_state.ans1_val,
+        st.session_state.ans2_val,
+        st.session_state.ans3_val,
+        st.session_state.ans4_val,
+    )
 
 st.divider()
 st.write("นายนิชคุณ สิทธิกัน เลขที่ 21 ม.4/9")
