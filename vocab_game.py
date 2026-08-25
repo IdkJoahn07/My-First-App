@@ -99,7 +99,7 @@ ans2 = st.text_input(
     "ข้อ 2: Cats love to eat `f _ s h`. 🐟",
     value=st.session_state.ans2_val,
 )
-ans2 = st.text_input(
+ans3 = st.text_input(
     "ข้อ 3: I eat a sweet `m _ _ _ o`. 🥭",
     value=st.session_state.ans3_val,
 )
