@@ -93,7 +93,7 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
 # ----------------------------------------------------
 # 1. ปุ่มเริ่มเล่นเกม
 # ----------------------------------------------------
-st.button("🎮 เริ่มคำนวณ", on_click=reset_game)
+st.button("🎮 เริ่มเกม", on_click=reset_game)
 
 st.divider()
 
