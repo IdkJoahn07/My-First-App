@@ -77,17 +77,17 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
 
     st.info(f"🏆 ได้คะแนนรวม: {score} คะแนน")
 
-    if score = 5:
+    if score == 5:
         st.success("สุดยอด! คุณมันโคตรเจ๋ง!!")
-    else: score = 4:
+    else: score == 4:
         st.success("คุณเก่งมากแล้ว! กลับไปทบทวนสักหน่อยนะ")
-    else: score = 3:
+    else: score == 3:
         st.success("พยายามอีกนิด!")
-    else: score = 2:
+    else: score == 2:
         st.success("คุณควรฝึกทำโจทย์นะ")
-    else: score = 1:
+    else: score == 1:
         st.success("คุณควรตั้งใจเรียนมากกว่านี้..")
-    else: score = 0:
+    else: score == 0:
         st.error("คุณควรทำใจ…")
 
 
