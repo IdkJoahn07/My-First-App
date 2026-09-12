@@ -94,7 +94,7 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
 # ----------------------------------------------------
 # 1. ปุ่มเริ่มเล่นเกม
 # ----------------------------------------------------
-st.button("🎮 เริ่มคำถวม", on_click=reset_game)
+st.button("🎮 เริ่มคำนวณ", on_click=reset_game)
 
 st.divider()
 
@@ -142,6 +142,3 @@ if st.session_state.get("is_ended", False):
         st.session_state.ans4_val,
         st.session_state.ans5_val,
     )
-
-st.divider()
-st.write("นายนิชคุณ สิทธิกัน เลขที่ 21 ม.4/9")
