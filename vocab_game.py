@@ -79,15 +79,15 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
 
     if score == 5:
         st.success("สุดยอด! คุณมันโคตรเจ๋ง!!")
-    elif: score == 4:
+    elif score == 4:
         st.success("คุณเก่งมากแล้ว! กลับไปทบทวนสักหน่อยนะ")
-    elif: score == 3:
+    elif score == 3:
         st.success("พยายามอีกนิด!")
-    elif: score == 2:
+    elif score == 2:
         st.success("คุณควรฝึกทำโจทย์นะ")
-    elif: score == 1:
+    elif score == 1:
         st.success("คุณควรตั้งใจเรียนมากกว่านี้..")
-    elif: score == 0:
+    elif score == 0:
         st.error("คุณควรทำใจ…")
 
 
