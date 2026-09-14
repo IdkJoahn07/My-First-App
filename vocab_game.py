@@ -1,6 +1,7 @@
+import time
 import streamlit as st
 
-st.title("⏱️ Challenge Quiz Game")
+st.title("⏱️ เกมคำนวณหาค่าพื้นที่และปริมาตรของทรงกลมและสี่เหลี่ยมผืนผ้า")
 
 # 1. กำหนดค่าเริ่มต้นใน session_state ถ้ายังไม่มี
 if "ans1_val" not in st.session_state:
@@ -13,6 +14,8 @@ if "ans4_val" not in st.session_state:
     st.session_state.ans4_val = ""
 if "ans5_val" not in st.session_state:
     st.session_state.ans5_val = ""
+if "is_ended" not in st.session_state:
+    st.session_state.is_ended = False
 
 
 # 📌 ฟังก์ชันเคลียร์ค่าเมื่อกดปุ่มเริ่มใหม่
@@ -22,15 +25,16 @@ def reset_game():
     st.session_state.ans3_val = ""  # เคลียร์ค่าช่องข้อ 3
     st.session_state.ans4_val = ""  # เคลียร์ค่าช่องข้อ 4
     st.session_state.ans5_val = ""  # เคลียร์ค่าช่องข้อ 5
+    st.session_state.start = time.time()  # เริ่มเวลาใหม่
     st.session_state.is_ended = False  # ปิด Dialog
 
 
 # ----------------------------------------------------
 # 📌 ฟังก์ชัน MessageBox (Dialog)
-# แก้ไข: เพิ่ม parameter ans3, ans4 ให้ครบถ้วน
+# แก้ไข: เพิ่ม parameter ans1-ans5 ให้ครบถ้วน
 # ----------------------------------------------------
 @st.dialog("📊 สรุปผลการเล่นเกม")
-def show_result_dialog(ans1, ans2, ans3, ans4):
+def show_result_dialog(ans1, ans2, ans3, ans4, ans5):
     st.balloons()
     score = 0
 
@@ -54,21 +58,22 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
     else:
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
 
-    # ตรวจข้อ 3 (แก้ไข: เปลี่ยนจาก u_ans2 เป็น u_ans3)
+    # ตรวจข้อ 3
     if u_ans3 == "3,000":
         st.success("✅ ข้อ 3: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 3: ยังไม่ถูกต้อง (คุณตอบ '{u_ans3}')")
 
-    # ตรวจข้อ 4 (แก้ไข: เปลี่ยนจาก u_ans2 เป็น u_ans4)
+    # ตรวจข้อ 4
     if u_ans4 == "616":
         st.success("✅ ข้อ 4: ถูกต้อง")
         score += 1
     else:
         st.error(f"❌ ข้อ 4: ยังไม่ถูกต้อง (คุณตอบ '{u_ans4}')")
 
-    if u_ans5 == "พื้นที่ผิวภายนอกของถังเก็บน้ำคือ 616 และ ปริมาตรสูงสุดที่่ถังใบนี้สามารถบรรจุได้ 1,437.33":
+    # ตรวจข้อ 5
+    if u_ans5 == "616 และ 1,437.33":
         st.success("✅ ข้อ 5: ถูกต้อง")
         score += 1
     else:
@@ -95,11 +100,21 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
 # ----------------------------------------------------
 st.button("🎮 เริ่มเกม", on_click=reset_game)
 
+# 2. แถบแสดงเวลานับถอยหลัง
+if "start" in st.session_state and not st.session_state.get("is_ended", False):
+    time_left = int(600 - (time.time() - st.session_state.start))
+
+    if time_left > 0:
+        st.error(f"⏳ เหลือเวลา: {time_left} วินาที")
+    else:
+        st.session_state.is_ended = True
+        st.rerun()
+
 st.divider()
 
 # 3. ช่องรับคำตอบ
 ans1 = st.text_input(
-    "ข้อ 1: แตงโมรูปทรงกรมสมบูรณ์มีรัศมียาว 21 เซนติเมตร จงหาปริมาตรของแตงโมผลนี้ (กำหนดให้ค่า π คือ 22/7)",
+    "ข้อ 1: แตงโมรูปทรงกลมสมบูรณ์มีรัศมียาว 21 เซนติเมตร จงหาปริมาตรของแตงโมผลนี้ (กำหนดให้ค่า π คือ 22/7)",
     value=st.session_state.ans1_val,
 )
 ans2 = st.text_input(
@@ -107,7 +122,7 @@ ans2 = st.text_input(
     value=st.session_state.ans2_val,
 )
 ans3 = st.text_input(
-    "ข้อ 3: .กล่องพัสดุทรงสี่เหลี่ยมมุมฉาก มีความกว้าง 10 เซนติเมตร ยาว 15 เซนติเมตร และสูง 20 เซนติเมตร กล่องใบนี้มีความจุหรือปริมาตรเท่าใด",
+    "ข้อ 3: กล่องพัสดุทรงสี่เหลี่ยมมุมฉาก มีความกว้าง 10 เซนติเมตร ยาว 15 เซนติเมตร และสูง 20 เซนติเมตร กล่องใบนี้มีความจุหรือปริมาตรเท่าใด",
     value=st.session_state.ans3_val,
 )
 ans4 = st.text_input(
@@ -115,11 +130,11 @@ ans4 = st.text_input(
     value=st.session_state.ans4_val,
 )
 ans5 = st.text_input(
-    "ข้อ 5: ถังเก็บน้ำทรงกลมใบหนึ่ง มีเส้นผ่านศูนย์กลางยาว 14 เมตร จงคำนวณหาพื้นที่ผิวภายนอกของถังเก็บน้ำและปริมาตรสูงสุดที่่ถังใบนี้สามารถบรรจุได้ (กำหนดให้ค่า π คือ 22/7)",
+    "ข้อ 5: ถังเก็บน้ำทรงกลมใบหนึ่ง มีเส้นผ่านศูนย์กลางยาว 14 เมตร จงคำนวณหาพื้นที่ผิวภายนอกของถังเก็บน้ำและปริมาตรสูงสุดที่ถังใบนี้สามารถบรรจุได้ (กำหนดให้ค่า π คือ 22/7)",
     value=st.session_state.ans5_val,
 )
 
-# อัปเดตค่าล่าสุดเข้าตัวแปร
+# อัปเดตค่าล่าสุดเข้าตัวแปร session_state
 st.session_state.ans1_val = ans1
 st.session_state.ans2_val = ans2
 st.session_state.ans3_val = ans3
